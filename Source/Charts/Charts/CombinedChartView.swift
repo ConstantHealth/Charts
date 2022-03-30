@@ -15,11 +15,8 @@ import CoreGraphics
 /// This chart class allows the combination of lines, bars, scatter and candle data all displayed in one chart area.
 open class CombinedChartView: BarLineChartViewBase, CombinedChartDataProvider
 {
-    public var barSettings: BarChartView.BarSettings {
-        BarChartView.BarSettings(rectCorner: .allCorners, cornerRadii: CGSize(width: 0, height: 0))
-    }
+    private var _barSettings = BarChartView.BarSettings(rectCorner: .allCorners, cornerRadii: .zero)
 
-    
     /// the fill-formatter used for determining the position of the fill-line
     internal var _fillFormatter: FillFormatter!
     
@@ -207,6 +204,16 @@ open class CombinedChartView: BarLineChartViewBase, CombinedChartDataProvider
     
     /// `true` the highlight is be full-bar oriented, `false` ifsingle-value
     open var isHighlightFullBarEnabled: Bool { return highlightFullBarEnabled }
+
+    @objc open var barSettings: BarChartView.BarSettings
+    {
+        get { return _barSettings }
+        set
+        {
+            _barSettings = newValue
+            setNeedsDisplay()
+        }
+    }
     
     // MARK: - ChartViewBase
     
